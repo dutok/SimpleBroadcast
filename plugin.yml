@@ -1,0 +1,5 @@
+name: SimpleBroadcast
+main: SimpleBroadcast\SimpleBroadcast
+author: Dutok
+version: 0.1
+api: 1.0.0
