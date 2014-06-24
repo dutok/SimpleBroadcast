@@ -3,3 +3,15 @@ main: SimpleBroadcast\SimpleBroadcast
 author: Dutok
 version: 0.1
 api: 1.0.0
+commands:
+ broadcast:
+  permission: simplebroadcast.broadcast
+  description: Broadcasts your message.
+permissions:
+ simplebroadcast:
+  default: op
+  description: Top level permission
+  children:
+   simplebroadcast.broadcast:
+    default: op
+    description: Allows you to broadcast.

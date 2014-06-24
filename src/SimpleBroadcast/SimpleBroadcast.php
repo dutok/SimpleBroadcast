@@ -9,7 +9,8 @@ namespace SimpleBroadcast;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\command\CommandSender;
+use pocketmine\command\Command;
 use pocketmine\Server;
 
 class SimpleBroadcast extends PluginBase{
@@ -18,26 +19,29 @@ class SimpleBroadcast extends PluginBase{
 
     public function onEnable(){
         @mkdir($this->getDataFolder());
-        $this->configFile = (new Config($this->getDataFolder()."config.yml", Config::YAML, array(
-            "messages" => array(
-                "message1",
-                "message2",
-                "message3"
-            ),
+        $this->configFile = (new Config("SimpleBroadcast\config.yml", Config::YAML, array(
             "prefix" => "Broadcast"
         )))->getAll();
-        $this->getServer()->getScheduler()->scheduleRepeatingTask(new SimpleBroadcastTask($this), 120);
+        $this->getLogger()->info("SimpleBroadcast has loaded!");
+    }
+
+    public function onCommand(CommandSender $sender, Command $command, $label, array $args){
+        switch($command->getName()){
+            case "broadcast":
+                if (isset($args[0])) {
+                    Server::getInstance()->broadcastMessage($this->configFile["prefix"] . ": " . implode(" ", $args));
+                }
+                else {
+                    $sender->sendMessage("You need to specify a message to send.");
+                }
+                break;
+        }
+
     }
 
     public function onDisable(){
+        $this->getLogger()->info("SimpleBroadcast has disabled!");
 
     }
 
-}
-
-class SimpleBroadcastTask extends PluginTask{
-
-    public function onRun($currentTick){
-        //Put code to execute on 'task'
-    }
 }
