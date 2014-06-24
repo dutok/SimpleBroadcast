@@ -12,6 +12,7 @@ use pocketmine\utils\Config;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\Server;
+use pocketmine\utils\TextFormat;
 
 class SimpleBroadcast extends PluginBase{
 
@@ -19,8 +20,9 @@ class SimpleBroadcast extends PluginBase{
 
     public function onEnable(){
         @mkdir($this->getDataFolder());
-        $this->configFile = (new Config("SimpleBroadcast\config.yml", Config::YAML, array(
-            "prefix" => "Broadcast"
+        $this->configFile = (new Config($this->getDataFolder()."config.yml", Config::YAML, array(
+            "prefix" => "Broadcast",
+            "color" => "§f"
         )))->getAll();
         $this->getLogger()->info("SimpleBroadcast has loaded!");
     }
@@ -29,7 +31,7 @@ class SimpleBroadcast extends PluginBase{
         switch($command->getName()){
             case "broadcast":
                 if (isset($args[0])) {
-                    Server::getInstance()->broadcastMessage($this->configFile["prefix"] . ": " . implode(" ", $args));
+                    Server::getInstance()->broadcastMessage($this->configFile["color"]."[".$this->configFile["prefix"]."]" . ": " . implode(" ", $args));
                 }
                 else {
                     $sender->sendMessage("You need to specify a message to send.");
